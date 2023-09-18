@@ -25,7 +25,9 @@ public class ImdbRestController {
 	public ImdbRestController(MovieService movieService) {
 		this.movieService = movieService;
 	}
-
+	
+	// application.properties:
+    // http://localhost:4200/imdb/api/v1/movies?fromYear=1970&toYear=1980
 	@GetMapping(params={"fromYear","toYear"})
 	public Collection<Movie> getMoviesFromRange(@RequestParam int fromYear,@RequestParam int toYear){
 		return movieService.findAllMoviesByYearRange(fromYear, toYear);
