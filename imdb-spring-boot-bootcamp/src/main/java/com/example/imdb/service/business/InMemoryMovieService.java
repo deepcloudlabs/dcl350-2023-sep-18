@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.imdb.entity.Director;
@@ -37,9 +36,9 @@ public class InMemoryMovieService implements MovieService {
 	}
 
 	// @Autowired
-	public void setSequenceSrv(SequenceService sequenceSrv) {
-		this.sequenceSrv = sequenceSrv;
-	}
+//	public void setSequenceSrv(SequenceService sequenceSrv) {
+//		this.sequenceSrv = sequenceSrv;
+//	}
 
 	public void populate() {
 		sequenceSrv.nextId("movies", 256);
