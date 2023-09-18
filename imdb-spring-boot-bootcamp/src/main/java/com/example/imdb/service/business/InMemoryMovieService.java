@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.imdb.entity.Director;
@@ -40,6 +42,7 @@ public class InMemoryMovieService implements MovieService {
 //		this.sequenceSrv = sequenceSrv;
 //	}
 
+	@PostConstruct
 	public void populate() {
 		sequenceSrv.nextId("movies", 256);
 		movies.put(1, new Movie(1, "500 Days Of Summer", 2009, "tt1022603"));
