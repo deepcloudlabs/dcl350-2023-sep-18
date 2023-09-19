@@ -4,6 +4,7 @@ import com.example.hr.domain.FullName;
 
 public class TestValueObject {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		var jack1 = FullName.of("jack", "bauer");
 		var jack2 = FullName.of("jack", "bauer");
