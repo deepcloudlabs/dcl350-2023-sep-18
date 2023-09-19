@@ -1,5 +1,11 @@
 package com.example.hr.dto.response;
 
-public class HireEmployeeResponse {
+import lombok.Data;
 
+@Data
+public class HireEmployeeResponse {
+	private String identityNo;
+	private String firstName;
+	private String lastName;
+	
 }
