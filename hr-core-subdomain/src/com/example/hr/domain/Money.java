@@ -51,4 +51,16 @@ public final class Money {
 		return "Money [value=" + value + ", currency=" + currency + "]";
 	}
 
+	public boolean lessThan(Money other) {
+		return this.currency.equals(other.currency) && this.value < other.getValue();
+	}
+
+	public static Money valueOf(int value) {
+		return valueOf(value, FiatCurrency.TL);
+	}
+
+	public Money multiply(double factor) {
+		return Money.valueOf(value*factor, currency);
+	}
+
 }
