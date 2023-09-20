@@ -11,6 +11,7 @@ import com.example.hr.domain.TcKimlikNo;
 import com.example.hr.dto.request.HireEmployeeRequest;
 import com.example.hr.dto.response.EmployeeResponse;
 import com.example.hr.dto.response.HireEmployeeResponse;
+import com.example.hr.entity.EmployeeEntity;
 
 @Configuration
 public class ModelMapperConfig {
@@ -38,7 +39,23 @@ public class ModelMapperConfig {
 			response.setJobStyle(employee.getStyle());
 			response.setBirthYear(employee.getBirthYear().value());
 			return response;
-		}; 	
+		}; 
+		private static final Converter<Employee, EmployeeEntity> EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER =
+				context -> {
+					var employee = context.getSource();
+					var entity = new EmployeeEntity();
+					entity.setIdentityNo(employee.getIdentityNo().getValue());
+					entity.setFirstName(employee.getFullname().firstName());
+					entity.setLastName(employee.getFullname().lastName());
+					entity.setIban(employee.getIban().getValue());
+					entity.setSalary(employee.getSalary().getValue());
+					entity.setCurrency(employee.getSalary().getCurrency());
+					entity.setDepartments(employee.getDepartments());
+					entity.setPhoto(employee.getPhoto().getValues());
+					entity.setJobStyle(employee.getStyle());
+					entity.setBirthYear(employee.getBirthYear().value());
+					return entity;
+				};		
 		private static final Converter<HireEmployeeRequest, Employee> HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER =
 				context -> {
 					var request = context.getSource();
@@ -51,13 +68,28 @@ public class ModelMapperConfig {
 					                   .birthYear(request.getBirthYear())
 					                   .build();
 				}; 	
-		
+
+		private static final Converter<EmployeeEntity, Employee> EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER =
+				context -> {
+					var entity = context.getSource();
+					return new Employee.Builder(TcKimlikNo.valueOf(entity.getIdentityNo()))
+					                   .fullname(entity.getFirstName(),entity.getLastName())
+					                   .iban(entity.getIban())
+					                   .salary(entity.getSalary(),entity.getCurrency())
+					                   .departments(entity.getDepartments().stream().map(Department::name).toList().toArray(new String[0]))
+					                   .style(entity.getJobStyle())
+					                   .birthYear(entity.getBirthYear())
+					                   .build();
+				}; 	
+				
 	@Bean
 	ModelMapper modelMapper() {
 		var modelMapper = new ModelMapper();
 		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_RESPONSE_CONVERTER, Employee.class, EmployeeResponse.class);
 		modelMapper.addConverter(HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER, HireEmployeeRequest.class, Employee.class);
 		modelMapper.addConverter(EMPLOYEE_TO_HIRE_EMPLOYEE_RESPONSE_CONVERTER, Employee.class, HireEmployeeResponse.class);
+		modelMapper.addConverter(EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER, EmployeeEntity.class, Employee.class);
+		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER, Employee.class, EmployeeEntity.class);
 		return modelMapper;
 	}
 }

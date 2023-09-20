@@ -10,10 +10,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.example.hr.domain.Department;
 import com.example.hr.domain.FiatCurrency;
 import com.example.hr.domain.JobStyle;
+import com.example.validation.Iban;
+import com.example.validation.TcKimlikNo;
 
 import lombok.Data;
 
@@ -23,11 +26,15 @@ import lombok.Data;
 public class EmployeeEntity {
 	@Id
 	@Column(name="identity")
+	@TcKimlikNo
 	private String identityNo;
 	@Column(name="fname")
+	@NotBlank
 	private String firstName;
 	@Column(name="lname")
+	@NotBlank
 	private String lastName;
+	@Iban
 	private String iban;
 	private double salary;
 	@Enumerated(EnumType.STRING)
