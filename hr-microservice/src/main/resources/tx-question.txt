@@ -1,0 +1,37 @@
+1.Sorum
+
+@Transactional(propagation = Propagation.REQUIRED)
+
+Aynı methodu birden fazla thread’den çağırdığımızda transaction’lar join oluyor demiştiniz.
+
+Peki burda isolation level nasıl yönetiyoruz?
+
+ 
+
+@Transactional(isolation = Isolation.READ_COMMITTED)
+
+eklediğimizde query’ler birbirini bekler mi?
+
+Yani queryler sıraya girip tek tek mi çalışır?
+
+Yoksa  birbirlerini beklemeden sırasız, her biri ayrı mı çalışır?
+
+ 
+
+2.Sorum
+
+@Transactional
+
+method ayrı methodlara parçalasak transactional yönetimi (commit) her method için ayrı mi yapılır.
+
+Yoksa ayırsak bile transaction propagate ederek ilk çağırdığımız methoddan çıktıktan sonra mı yapılır? (Ayırdığımız methodlara da Transactional eklemek veya eklememek açısından durum değişir mi?)
+
+ 
+
+3.Sorum
+
+@Transactional(readOnly = true)
+
+Yaptığımızda (sadece select methodlar için) isolation ve propagation’da bir değişklik oluyor mu? Yoksa sematik olarak sadace queryleri birbirinden ayırmak için mi kullanılıyor.
+
+(insert/update/select/delete)

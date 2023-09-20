@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.heaxgon.Adapter;
@@ -36,7 +37,7 @@ public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public Employee createEmployee(Employee employee) {
 		System.err.println(employee);
 		var employeeJpaEntity = modelMapper.map(employee, EmployeeEntity.class);

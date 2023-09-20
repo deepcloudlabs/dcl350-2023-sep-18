@@ -34,11 +34,13 @@ public class HrRestController {
 
 	@GetMapping("{identityNo}")
 	public EmployeeResponse getEmployee(@PathVariable @TcKimlikNo String identityNo){
+		System.err.println(hrService.getClass().getName());
 		return hrService.findById(identityNo);
 	}
 	
 	@PostMapping
 	public HireEmployeeResponse hireEmployee(@RequestBody @Validated HireEmployeeRequest request){
+		System.err.println(hrService.getClass().getName());
 		return hrService.addEmployee(request);		
 	}
 	

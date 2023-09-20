@@ -1,8 +1,9 @@
 package com.example.hr.service;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.hr.application.HrApplication;
@@ -30,14 +31,15 @@ public class HrService {
 		return modelMapper.map(foundEmployee, EmployeeResponse.class);
 	}
 
-	@Transactional
+	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	public HireEmployeeResponse addEmployee(HireEmployeeRequest request) {
 		var employee = modelMapper.map(request, Employee.class);
 		var hiredEmployee = hrApplication.hireEmployee(employee);
+		removeEmployee("111111111110");
 		return modelMapper.map(hiredEmployee, HireEmployeeResponse.class);
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public EmployeeResponse removeEmployee(String identityNo) {
 		var kimlikNo = TcKimlikNo.valueOf(identityNo);
 		var firedEmployee = hrApplication.fireEmployee(kimlikNo);

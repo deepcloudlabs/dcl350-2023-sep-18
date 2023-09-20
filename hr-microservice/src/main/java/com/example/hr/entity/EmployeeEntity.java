@@ -21,17 +21,17 @@ import com.example.validation.TcKimlikNo;
 import lombok.Data;
 
 @Entity
-@Table(name="employees")
+@Table(name = "employees")
 @Data
 public class EmployeeEntity {
 	@Id
-	@Column(name="identity")
+	@Column(name = "identity")
 	@TcKimlikNo
 	private String identityNo;
-	@Column(name="fname")
+	@Column(name = "fname")
 	@NotBlank
 	private String firstName;
-	@Column(name="lname")
+	@Column(name = "lname")
 	@NotBlank
 	private String lastName;
 	@Iban
@@ -39,7 +39,7 @@ public class EmployeeEntity {
 	private double salary;
 	@Enumerated(EnumType.STRING)
 	private FiatCurrency currency;
-	@Column(name="byear")
+	@Column(name = "byear")
 	private int birthYear;
 	@Lob
 	@Column(columnDefinition = "longblob")
@@ -48,4 +48,5 @@ public class EmployeeEntity {
 	private List<Department> departments;
 	@Enumerated(EnumType.ORDINAL)
 	private JobStyle jobStyle;
+
 }

@@ -82,11 +82,16 @@ public class Employee {
 		return Objects.equals(identityNo, other.identityNo);
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "Employee [identityNo=" + identityNo + ", fullname=" + fullname + ", iban=" + iban + ", salary=" + salary
-				+ ", departments=" + departments + ", style=" + style + ", birthYear=" + birthYear + "]";
+				+ ", departments=" + departments + ", style=" + style + ", photo=" + photo.getBase64Values() + ", birthYear=" + birthYear
+				+ "]";
 	}
+
+
 
 	public static class Builder {
 		private final TcKimlikNo identityNo;

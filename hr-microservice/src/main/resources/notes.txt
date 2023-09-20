@@ -1,0 +1,14 @@
+Transaction: ACID
+1x Database -> DB manages transaction
+Flat Model -> Connection -> TX
+begin/commit/rollback
+Client-Server
+Application: Connection-oriented
+
+nx Database -> Distributed Transaction
+Application manages the transaction -> Transaction Coordinator
+Spring Boot automatically presents TC
+TC runs 2PC (Two Phase Commit)
+JDBC Driver should support 2PC -> XA Driver (DTX)
+
+Saga Pattern -> DT -> BASE -> Eventual Consistent
