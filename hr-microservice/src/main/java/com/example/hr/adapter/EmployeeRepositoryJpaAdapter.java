@@ -38,6 +38,7 @@ public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 	@Override
 	@Transactional
 	public Employee createEmployee(Employee employee) {
+		System.err.println(employee);
 		var employeeJpaEntity = modelMapper.map(employee, EmployeeEntity.class);
 		var savedEmployeeJpaEntity =employeeEntityRepository.save(employeeJpaEntity);
 		return modelMapper.map(savedEmployeeJpaEntity, Employee.class);

@@ -49,6 +49,7 @@ public class HrRestErrorHandler {
 	@ExceptionHandler(MappingException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public RestErrorMessage MappingException(MappingException e) {
+		e.printStackTrace();
 		var message = e.getErrorMessages().stream().map(ErrorMessage::getMessage).collect(Collectors.joining(","));
 		return new RestErrorMessage(message);
 	}

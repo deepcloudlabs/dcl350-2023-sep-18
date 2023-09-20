@@ -23,7 +23,6 @@ public class HrService {
 		this.modelMapper = modelMapper;
 	}
 
-	@Cacheable(cacheNames = "employees", key = "#identityNo")
 	public EmployeeResponse findById(String identityNo) {
 		TcKimlikNo kimlikNo = TcKimlikNo.valueOf(identityNo);
 		var employee = hrApplication.findEmployeeByIdentityNo(kimlikNo);

@@ -43,6 +43,7 @@ public class ModelMapperConfig {
 		private static final Converter<Employee, EmployeeEntity> EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER =
 				context -> {
 					var employee = context.getSource();
+					System.err.println(employee);
 					var entity = new EmployeeEntity();
 					entity.setIdentityNo(employee.getIdentityNo().getValue());
 					entity.setFirstName(employee.getFullname().firstName());
@@ -54,6 +55,7 @@ public class ModelMapperConfig {
 					entity.setPhoto(employee.getPhoto().getValues());
 					entity.setJobStyle(employee.getStyle());
 					entity.setBirthYear(employee.getBirthYear().value());
+					System.err.println(entity);
 					return entity;
 				};		
 		private static final Converter<HireEmployeeRequest, Employee> HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER =
@@ -65,6 +67,7 @@ public class ModelMapperConfig {
 					                   .salary(request.getSalary(),request.getCurrency())
 					                   .departments(request.getDepartments().stream().map(Department::name).toList().toArray(new String[0]))
 					                   .style(request.getJobStyle())
+					                   .photo(request.getPhoto())
 					                   .birthYear(request.getBirthYear())
 					                   .build();
 				}; 	
@@ -78,6 +81,7 @@ public class ModelMapperConfig {
 					                   .salary(entity.getSalary(),entity.getCurrency())
 					                   .departments(entity.getDepartments().stream().map(Department::name).toList().toArray(new String[0]))
 					                   .style(entity.getJobStyle())
+					                   .photo(entity.getPhoto())
 					                   .birthYear(entity.getBirthYear())
 					                   .build();
 				}; 	
