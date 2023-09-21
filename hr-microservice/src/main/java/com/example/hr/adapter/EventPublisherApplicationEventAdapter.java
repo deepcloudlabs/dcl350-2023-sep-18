@@ -10,12 +10,13 @@ import com.example.hr.infrastructure.EventPublisher;
 
 @Service
 @Adapter(port = EventPublisher.class)
-@ConditionalOnProperty(name="eventPlatform", havingValue = "kafka-websocket")
+@ConditionalOnProperty(value="eventPlatform", havingValue = "rabbit-websocket")
 public class EventPublisherApplicationEventAdapter implements EventPublisher<HrEvent> {
 	private final ApplicationEventPublisher eventPublisher;
 
 	public EventPublisherApplicationEventAdapter(ApplicationEventPublisher eventPublisher) {
 		this.eventPublisher = eventPublisher;
+		System.err.println("EventPublisherApplicationEventAdapter is created.");		
 	}
 
 	@Override

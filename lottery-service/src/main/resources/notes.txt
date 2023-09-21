@@ -1,0 +1,1 @@
+curl -X POST "http://localhost:7700/api/v1/actuator/refresh" -d "{}" -H "Accept: application/json" -H "Content-Type: application/json"

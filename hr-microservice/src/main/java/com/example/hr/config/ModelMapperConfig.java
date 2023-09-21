@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.hr.document.EmployeeDocument;
 import com.example.hr.domain.Department;
 import com.example.hr.domain.Employee;
 import com.example.hr.domain.TcKimlikNo;
@@ -43,7 +44,6 @@ public class ModelMapperConfig {
 		private static final Converter<Employee, EmployeeEntity> EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER =
 				context -> {
 					var employee = context.getSource();
-					System.err.println(employee);
 					var entity = new EmployeeEntity();
 					entity.setIdentityNo(employee.getIdentityNo().getValue());
 					entity.setFirstName(employee.getFullname().firstName());
@@ -55,9 +55,25 @@ public class ModelMapperConfig {
 					entity.setPhoto(employee.getPhoto().getValues());
 					entity.setJobStyle(employee.getStyle());
 					entity.setBirthYear(employee.getBirthYear().value());
-					System.err.println(entity);
 					return entity;
+				};	
+		private static final Converter<Employee, EmployeeDocument> EMPLOYEE_TO_EMPLOYEE_DOCUMENT_CONVERTER =
+				context -> {
+					var employee = context.getSource();
+					var document = new EmployeeDocument();
+					document.setIdentityNo(employee.getIdentityNo().getValue());
+					document.setFirstName(employee.getFullname().firstName());
+					document.setLastName(employee.getFullname().lastName());
+					document.setIban(employee.getIban().getValue());
+					document.setSalary(employee.getSalary().getValue());
+					document.setCurrency(employee.getSalary().getCurrency());
+					document.setDepartments(employee.getDepartments());
+					document.setPhoto(employee.getPhoto().getBase64Values());
+					document.setJobStyle(employee.getStyle());
+					document.setBirthYear(employee.getBirthYear().value());
+					return document;
 				};		
+				
 		private static final Converter<HireEmployeeRequest, Employee> HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER =
 				context -> {
 					var request = context.getSource();
@@ -85,6 +101,19 @@ public class ModelMapperConfig {
 					                   .birthYear(entity.getBirthYear())
 					                   .build();
 				}; 	
+		private static final Converter<EmployeeDocument, Employee> EMPLOYEE_DOCUMENT_TO_EMPLOYEE_CONVERTER =
+				context -> {
+					var document = context.getSource();
+					return new Employee.Builder(TcKimlikNo.valueOf(document.getIdentityNo()))
+							.fullname(document.getFirstName(),document.getLastName())
+							.iban(document.getIban())
+							.salary(document.getSalary(),document.getCurrency())
+							.departments(document.getDepartments().stream().map(Department::name).toList().toArray(new String[0]))
+							.style(document.getJobStyle())
+							.photo(document.getPhoto())
+							.birthYear(document.getBirthYear())
+							.build();
+				}; 	
 				
 	@Bean
 	ModelMapper modelMapper() {
@@ -93,7 +122,9 @@ public class ModelMapperConfig {
 		modelMapper.addConverter(HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER, HireEmployeeRequest.class, Employee.class);
 		modelMapper.addConverter(EMPLOYEE_TO_HIRE_EMPLOYEE_RESPONSE_CONVERTER, Employee.class, HireEmployeeResponse.class);
 		modelMapper.addConverter(EMPLOYEE_ENTITY_TO_EMPLOYEE_CONVERTER, EmployeeEntity.class, Employee.class);
+		modelMapper.addConverter(EMPLOYEE_DOCUMENT_TO_EMPLOYEE_CONVERTER, EmployeeDocument.class, Employee.class);
 		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_ENTITY_CONVERTER, Employee.class, EmployeeEntity.class);
+		modelMapper.addConverter(EMPLOYEE_TO_EMPLOYEE_DOCUMENT_CONVERTER, Employee.class, EmployeeDocument.class);
 		return modelMapper;
 	}
 }

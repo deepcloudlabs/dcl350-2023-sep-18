@@ -35,7 +35,6 @@ public class HrService {
 	public HireEmployeeResponse addEmployee(HireEmployeeRequest request) {
 		var employee = modelMapper.map(request, Employee.class);
 		var hiredEmployee = hrApplication.hireEmployee(employee);
-		removeEmployee("111111111110");
 		return modelMapper.map(hiredEmployee, HireEmployeeResponse.class);
 	}
 

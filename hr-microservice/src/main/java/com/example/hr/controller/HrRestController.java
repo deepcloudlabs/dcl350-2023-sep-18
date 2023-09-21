@@ -40,7 +40,6 @@ public class HrRestController {
 	
 	@PostMapping
 	public HireEmployeeResponse hireEmployee(@RequestBody @Validated HireEmployeeRequest request){
-		System.err.println(hrService.getClass().getName());
 		return hrService.addEmployee(request);		
 	}
 	

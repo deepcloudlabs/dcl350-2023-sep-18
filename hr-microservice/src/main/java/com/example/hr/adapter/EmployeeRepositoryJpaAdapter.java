@@ -3,6 +3,7 @@ package com.example.hr.adapter;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import com.example.hr.repository.EmployeeRepository;
 
 @Repository
 @Adapter(port = EmployeeRepository.class)
+@ConditionalOnProperty(name="persistencePlatform", havingValue = "relational")
 public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 	private final EmployeeEntityRepository employeeEntityRepository;
 	private final ModelMapper modelMapper;
@@ -23,6 +25,7 @@ public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 	public EmployeeRepositoryJpaAdapter(EmployeeEntityRepository employeeEntityRepository, ModelMapper modelMapper) {
 		this.employeeEntityRepository = employeeEntityRepository;
 		this.modelMapper = modelMapper;
+		System.err.println("EmployeeRepositoryJpaAdapter is created.");		
 	}
 
 	@Override
@@ -39,7 +42,6 @@ public class EmployeeRepositoryJpaAdapter implements EmployeeRepository {
 	@Override
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public Employee createEmployee(Employee employee) {
-		System.err.println(employee);
 		var employeeJpaEntity = modelMapper.map(employee, EmployeeEntity.class);
 		var savedEmployeeJpaEntity =employeeEntityRepository.save(employeeJpaEntity);
 		return modelMapper.map(savedEmployeeJpaEntity, Employee.class);
